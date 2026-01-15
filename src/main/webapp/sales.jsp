@@ -348,3 +348,65 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
+
+                                                        <div class="d-flex justify-content-end align-items-center mb-4">
+                                                                                    <div class="text-end">
+                                                                                        <small class="text-muted text-uppercase fw-bold">Total Amount</small>
+                                                                                        <div class="fs-2 fw-bold text-primary" id="modalTotal"></div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="text-center border-top pt-4">
+                                                                                    <p class="fw-bold text-dark mb-1">Thank you for your purchase!</p>
+                                                                                    <p class="text-muted small mb-0">Please keep this receipt for warranty purposes.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer border-0 p-3">
+                                                                            <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                                                                            <button type="button" class="btn btn-primary rounded-pill px-4" onclick="printModal()"><i class="fa-solid fa-print me-2"></i>Print</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                                            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                                                            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+                                                            <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+                                                            <script>
+                                                                $(document).ready(function () {
+                                                                    $('#salesTable').DataTable({
+                                                                        "pageLength": 10,
+                                                                        "order": [[ 3, "desc" ]]
+                                                                    });
+                                                                });
+
+                                                                function viewBill(trxId, date, total) {
+                                                                    $('#modalTrxId').text('#' + trxId);
+                                                                    $('#modalDate').text(date);
+                                                                    $('#modalTotal').text('Rs. ' + parseFloat(total).toLocaleString());
+
+                                                                    $('#modalItems').html('<tr><td colspan="3" class="text-center p-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>');
+                                                                    new bootstrap.Modal(document.getElementById('billModal')).show();
+
+                                                                    $.ajax({
+                                                                        url: 'bill-servlet',
+                                                                        type: 'GET',
+                                                                        data: { transactionId: trxId },
+                                                                        dataType: 'json',
+                                                                        success: function(items) {
+                                                                            let html = '';
+                                                                            items.forEach(item => {
+                                                                                html += '<tr>' +
+                                                                                        '<td class="ps-3">' + item.name + '</td>' +
+                                                                                        '<td class="text-center">' + item.qty + '</td>' +
+                                                                                        '<td class="text-end pe-3">Rs. ' + item.total.toLocaleString() + '</td>' +
+                                                                                        '</tr>';
+                                                                            });
+                                                                            $('#modalItems').html(html);
+                                                                        }
+                                                                    });
+                                                                }
