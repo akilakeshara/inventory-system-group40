@@ -410,3 +410,89 @@
                                                                         }
                                                                     });
                                                                 }
+
+                                                                function printModal() {
+                                                                            var printContents = document.getElementById('billContent').innerHTML;
+                                                                            var originalContents = document.body.innerHTML;
+                                                                            document.body.innerHTML = printContents;
+                                                                            window.print();
+                                                                            document.body.innerHTML = originalContents;
+                                                                            location.reload();
+                                                                        }
+
+                                                                        function downloadPDF(trxId, date, total) {
+                                                                            const { jsPDF } = window.jspdf;
+                                                                            const doc = new jsPDF();
+
+                                                                            $.ajax({
+                                                                                url: 'bill-servlet',
+                                                                                type: 'GET',
+                                                                                data: { transactionId: trxId },
+                                                                                dataType: 'json',
+                                                                                success: function(items) {
+                                                                                    const primaryColor = '#6366f1';
+
+                                                                                    // Header
+                                                                                    doc.setFillColor(primaryColor);
+                                                                                    doc.rect(0, 0, 210, 40, 'F');
+
+                                                                                    doc.setTextColor('#FFFFFF');
+                                                                                    doc.setFontSize(22);
+                                                                                    doc.setFont("helvetica", "bold");
+                                                                                    doc.text("Inventory Management System", 105, 20, { align: 'center' });
+
+                                                                                    doc.setFontSize(10);
+                                                                                    doc.setFont("helvetica", "normal");
+                                                                                    doc.text("123 Main Street, Colombo, LK | +94 11 234 5678", 105, 30, { align: 'center' });
+
+                                                                                    // Invoice Info
+                                                                                    doc.setTextColor('#000000');
+                                                                                    doc.setFontSize(14);
+                                                                                    doc.setFont("helvetica", "bold");
+                                                                                    doc.text("INVOICE", 14, 55);
+
+                                                                                    doc.setFontSize(10);
+                                                                                    doc.setFont("helvetica", "normal");
+                                                                                    doc.text("Invoice No: #" + trxId, 14, 62);
+                                                                                    doc.text("Date: " + date, 14, 68);
+
+                                                                                    // Table
+                                                                                    let tableBody = items.map(item => [item.name, item.qty, 'Rs. ' + item.total.toLocaleString()]);
+
+                                                                                    doc.autoTable({
+                                                                                        startY: 80,
+                                                                                        head: [['Item Description', 'Quantity', 'Total Amount']],
+                                                                                        body: tableBody,
+                                                                                        theme: 'striped',
+                                                                                        headStyles: { fillColor: primaryColor, textColor: '#FFFFFF', fontStyle: 'bold' },
+                                                                                        styles: { fontSize: 10, cellPadding: 4 },
+                                                                                        columnStyles: {
+                                                                                            0: { cellWidth: 'auto' },
+                                                                                            1: { cellWidth: 30, halign: 'center' },
+                                                                                            2: { cellWidth: 40, halign: 'right' }
+                                                                                        }
+                                                                                    });
+
+                                                                                    // Total
+                                                                                    let finalY = doc.lastAutoTable.finalY + 15;
+                                                                                    doc.setFontSize(12);
+                                                                                    doc.setFont("helvetica", "bold");
+                                                                                    doc.text("Total Paid:", 150, finalY, { align: 'right' });
+                                                                                    doc.setFontSize(14);
+                                                                                    doc.setTextColor(primaryColor);
+                                                                                    doc.text("Rs. " + parseFloat(total).toLocaleString(), 200, finalY, { align: 'right' });
+
+                                                                                    // Footer
+                                                                                    let pageHeight = doc.internal.pageSize.height;
+                                                                                    doc.setTextColor('#888888');
+                                                                                    doc.setFontSize(10);
+                                                                                    doc.setFont("helvetica", "italic");
+                                                                                    doc.text("Thank you for your business!", 105, pageHeight - 15, { align: 'center' });
+
+                                                                                    doc.save("Invoice-" + trxId + ".pdf");
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    </script>
+                                                                </body>
+                                                                </html>
