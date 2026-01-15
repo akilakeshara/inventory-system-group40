@@ -197,3 +197,76 @@
                             margin-right: 5px;
                             cursor: pointer;
                         }
+                        .btn-view { background: #e0e7ff; color: var(--primary); }
+                                .btn-view:hover { background: var(--primary); color: white; }
+                                .btn-pdf { background: #fee2e2; color: #ef4444; }
+                                .btn-pdf:hover { background: #ef4444; color: white; }
+                            </style>
+                        </head>
+                        <body>
+
+                            <!-- Sidebar -->
+                            <nav class="sidebar">
+                                <div class="sidebar-brand">
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+                                    <span>Inventory Management<br>System</span>
+                                </div>
+
+                                <div class="nav-menu">
+                                    <a href="dashboard.jsp" class="nav-link">
+                                        <i class="fa-solid fa-home"></i> Dashboard
+                                    </a>
+                                    <a href="products.jsp" class="nav-link">
+                                        <i class="fa-solid fa-box-archive"></i> Products
+                                    </a>
+                                    <a href="sales.jsp" class="nav-link active">
+                                        <i class="fa-solid fa-receipt"></i> Sales
+                                    </a>
+                                    <a href="suppliers.jsp" class="nav-link">
+                                        <i class="fa-solid fa-truck-field"></i> Suppliers
+                                    </a>
+                                    <a href="expenses.jsp" class="nav-link">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i> Expenses
+                                    </a>
+                                    <a href="reports.jsp" class="nav-link">
+                                        <i class="fa-solid fa-chart-pie"></i> Reports
+                                    </a>
+                                </div>
+
+                                <div class="user-profile">
+                                    <div>
+                                        <div class="user-info"><%= user.getUsername() %></div>
+                                        <div class="user-role">Administrator</div>
+                                    </div>
+                                    <a href="logout" class="btn-logout" title="Logout">
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </a>
+                                </div>
+                            </nav>
+
+                            <!-- Main Content -->
+                            <main class="main-content">
+                                <div class="dashboard-banner">
+                                    <div class="banner-text">
+                                        <h2>Sales History</h2>
+                                        <p>View lifetime sales and download invoices.</p>
+                                    </div>
+                                </div>
+
+                                <div class="stats-grid">
+                                    <div class="stat-card bg-green">
+                                        <div class="stat-title">Total Revenue</div>
+                                        <div class="stat-value">Rs. <%= String.format("%,.0f", totalRevenue) %></div>
+                                        <i class="fa-solid fa-money-bill-wave stat-icon-bg"></i>
+                                    </div>
+                                    <div class="stat-card bg-blue">
+                                        <div class="stat-title">Total Transactions</div>
+                                        <div class="stat-value"><%= transactionList.size() %></div>
+                                        <i class="fa-solid fa-file-invoice-dollar stat-icon-bg"></i>
+                                    </div>
+                                    <div class="stat-card bg-dark">
+                                        <div class="stat-title">Items Sold</div>
+                                        <div class="stat-value"><%= totalItemsSold %></div>
+                                        <i class="fa-solid fa-cart-arrow-down stat-icon-bg"></i>
+                                    </div>
+                                </div>
