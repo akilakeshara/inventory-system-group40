@@ -93,3 +93,47 @@ public class ProductDAO {
         return product;
     }
 
+    public boolean addProduct(Product product) {
+        String sql = "INSERT INTO products (name, category, purchase_price, price, stock_quantity, image, supplier) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, product.getName());
+            pst.setString(2, product.getCategory());
+            pst.setDouble(3, product.getPurchasePrice()); // NEW
+            pst.setDouble(4, product.getPrice());
+            pst.setInt(5, product.getStockQuantity());
+            pst.setString(6, product.getImage());
+            pst.setString(7, product.getSupplier());
+
+            return pst.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); return false; }
+    }
+
+    public boolean updateProduct(Product product) {
+        String sql = "UPDATE products SET name=?, category=?, purchase_price=?, price=?, stock_quantity=?, image=?, supplier=? WHERE id=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, product.getName());
+            pst.setString(2, product.getCategory());
+            pst.setDouble(3, product.getPurchasePrice()); // NEW
+            pst.setDouble(4, product.getPrice());
+            pst.setInt(5, product.getStockQuantity());
+            pst.setString(6, product.getImage());
+            pst.setString(7, product.getSupplier());
+            pst.setInt(8, product.getId());
+
+            return pst.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); return false; }
+    }
+
+    public void deleteProduct(int id) {
+        String sql = "DELETE FROM products WHERE id=?";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, id);
+            pst.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+}
