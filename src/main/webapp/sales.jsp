@@ -270,3 +270,81 @@
                                         <i class="fa-solid fa-cart-arrow-down stat-icon-bg"></i>
                                     </div>
                                 </div>
+
+                                <div class="content-card">
+                                            <div class="table-responsive">
+                                                <table id="salesTable" class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Bill ID</th>
+                                                            <th>Items Count</th>
+                                                            <th>Total Amount</th>
+                                                            <th>Date & Time</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% for (Sale s : transactionList) {
+                                                            String dateStr = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(s.getSaleDate());
+                                                        %>
+                                                        <tr>
+                                                            <td class="text-muted fw-bold">#<%= s.getTransactionId() %></td>
+                                                            <td><%= s.getProductName() %></td> <!-- Using productName field to store item count string -->
+                                                            <td class="fw-bold text-primary">Rs. <%= String.format("%,.0f", s.getTotalPrice()) %></td>
+                                                            <td><%= dateStr %></td>
+                                                            <td><span class="status-badge">Paid</span></td>
+                                                            <td>
+                                                                <button class="btn-action btn-view" onclick="viewBill('<%= s.getTransactionId() %>', '<%= dateStr %>', '<%= s.getTotalPrice() %>')">
+                                                                    <i class="fa-solid fa-eye"></i>
+                                                                </button>
+                                                                <button class="btn-action btn-pdf" onclick="downloadPDF('<%= s.getTransactionId() %>', '<%= dateStr %>', '<%= s.getTotalPrice() %>')">
+                                                                    <i class="fa-solid fa-file-pdf"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </main>
+
+                                    <!-- Bill Modal -->
+                                    <div class="modal fade" id="billModal" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-content border-0 shadow-lg rounded-4">
+                                                <div class="modal-body p-0" id="billContent">
+                                                    <!-- Header -->
+                                                    <div class="text-white p-4 text-center rounded-top-4" style="background-color: var(--primary);">
+                                                        <i class="fa-solid fa-boxes-stacked fa-3x mb-3 opacity-75"></i>
+                                                        <h3 class="fw-bold mb-1">Inventory Management System</h3>
+                                                        <p class="mb-0 opacity-75 small">123 Main Street, Colombo, LK | +94 11 234 5678</p>
+                                                    </div>
+
+                                                    <div class="p-4">
+                                                        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                                                            <div>
+                                                                <small class="text-muted text-uppercase fw-bold">Invoice No</small>
+                                                                <div class="fw-bold fs-5" id="modalTrxId"></div>
+                                                            </div>
+                                                            <div class="text-end">
+                                                                <small class="text-muted text-uppercase fw-bold">Date</small>
+                                                                <div class="fw-bold" id="modalDate"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="table-responsive mb-4">
+                                                            <table class="table table-borderless mb-0">
+                                                                <thead class="bg-light">
+                                                                    <tr>
+                                                                        <th class="ps-3 rounded-start">Item Description</th>
+                                                                        <th class="text-center">Qty</th>
+                                                                        <th class="text-end pe-3 rounded-end">Amount</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="modalItems">
+                                                                    <!-- Items loaded via AJAX -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
