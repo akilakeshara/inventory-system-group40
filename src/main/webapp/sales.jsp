@@ -148,3 +148,52 @@
                     overflow: hidden;
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                     transition: transform 0.2s;
+                }
+                        .stat-card:hover { transform: translateY(-5px); }
+                        .bg-green { background-color: var(--success); }
+                        .bg-blue { background-color: var(--primary); }
+                        .bg-dark { background-color: #1f2937; }
+                        .stat-title { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; opacity: 0.9; margin-bottom: 10px; }
+                        .stat-value { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; }
+                        .stat-icon-bg {
+                            position: absolute;
+                            right: -10px; bottom: -10px;
+                            font-size: 5rem;
+                            opacity: 0.15;
+                            transform: rotate(-15deg);
+                        }
+
+                        .content-card {
+                            background: var(--card-bg);
+                            border-radius: 20px;
+                            padding: 30px;
+                            border: 1px solid #e5e7eb;
+                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                        }
+
+                        .table { margin: 0; }
+                        .table thead th {
+                            background-color: #f8fafc;
+                            color: #64748b;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            font-size: 0.75rem;
+                            letter-spacing: 0.5px;
+                            border-bottom: 1px solid #e2e8f0;
+                            padding: 15px 20px;
+                        }
+                        .table tbody td { padding: 15px 20px; vertical-align: middle; color: #334155; font-weight: 500; border-bottom: 1px solid #f1f5f9; }
+                        .table tbody tr:last-child td { border-bottom: none; }
+                        .table tbody tr:hover { background-color: #f8fafc; }
+
+                        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; background: #d1fae5; color: #065f46; }
+
+                        .btn-action {
+                            width: 36px; height: 36px;
+                            display: inline-flex; align-items: center; justify-content: center;
+                            border-radius: 10px;
+                            transition: 0.2s;
+                            border: none;
+                            margin-right: 5px;
+                            cursor: pointer;
+                        }
